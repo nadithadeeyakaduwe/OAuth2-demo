@@ -1,3 +1,47 @@
-<p>
-  login works!
-</p>
+<div class="main">
+
+
+  <div class="container">
+    <div class="middle">
+      <div id="login">
+
+        <div class="alert alert-secondary mb-3" role="alert" style="    text-align: center;">
+          <strong> Assignment-02 | IT15014078 | SSD </strong>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+          <fieldset class="clearfix">
+
+            <p><span class="fa fa-user"></span><input type="text" (focus)="reset()" Placeholder="Username : SLIIT" formControlName="username"
+                required></p>
+            <p><span class="fa fa-lock"></span><input type="password" (focus)="reset()" Placeholder="Password : 123" formControlName="password"
+                required></p>
+
+            <div class="alert alert-warning mb-3" role="alert" style="text-align: center;" *ngIf="loginForm.get('username').touched && loginForm.get('username').hasError('required')">
+              Username is required
+            </div>
+            <div class="alert alert-warning mb-3" role="alert" style="text-align: center;" *ngIf="loginForm.get('password').touched && loginForm.get('password').hasError('required') && !loginForm.get('username').hasError('required')">
+              Password is required
+            </div>
+            <div class="alert alert-danger mb-3" role="alert" style="text-align: center;" *ngIf="isInvaliedCredintials">
+                Incorect Username or password
+              </div>
+
+            <div>
+              <span class="float-right" style="width:50%; text-align:right;  display: inline-block;"><input type="submit"
+                  value="Sign In"></span>
+            </div>
+
+          </fieldset>
+          <div class="clearfix"></div>
+        </form>
+
+        <div class="clearfix"></div>
+
+      </div> <!-- end login -->
+
+    </div>
+  </div>
+
+</div>
