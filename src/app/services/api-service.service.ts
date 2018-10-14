@@ -30,26 +30,31 @@ export class ApiServiceService {
   }
 
   getAccessToken(authCode: string) {
-    const url = 'https://graph.facebook.com/oauth/access_token';
-
-    const body = {
-      'grant_type' : 'authorization_code',
-      'client_id' : this.appid,
-      'redirect_uri' : encodeURI ('https://localhost:4200/home/code'),
-      'code' : authCode
-    };
-
-    console.log('body is: ' + JSON.stringify(body));
+    const url = 'https://graph.facebook.com/oauth/access_token?client_id='
+    + this.appid + '&redirect_uri=https://localhost:4200/home/code&client_secret='
+    + this.appSecret + '&code=' + authCode;
 
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        'Authorization' : 'Basic ' + btoa(this.appid + ':' + this.appSecret)
+        'Authorization' : 'Basic ' + btoa(this.appid + ':' + this.appSecret),
+        'Access-Control-Allow-Origin': '*'
       })
     };
 
+     return this.http.get(url, httpOptions);
+  }
 
-    return this.http.post(url, body, httpOptions);
+  getUserAlbums(token: string) {
+    const url =  'https://graph.facebook.com/v2.8/me/albums';
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization' : 'Bearer ' + token
+      })
+    };
+
+    return this.http.get(url, httpOptions);
   }
 
 
