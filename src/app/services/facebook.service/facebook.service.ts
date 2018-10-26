@@ -4,9 +4,7 @@ import { environment } from '../../../environments/environment';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class FacebookService extends RestService {
 
   appid: string = environment.appID;
@@ -34,13 +32,18 @@ export class FacebookService extends RestService {
     const redirect_uri = this.getUrlEncode('http://localhost:4200/home/code');
     // tslint:disable-next-line:max-line-length
     const url = `https://graph.facebook.com/oauth/access_token?client_id=${this.appid}&redirect_uri=${redirect_uri}&client_secret=${this.appSecret}&code=${authCode}`;
-    this.headers.set('Authorization', 'Basic ' + btoa(this.appid + ':' + this.appSecret));
+    this.headers.append('Authorization', 'Basic ' + btoa(this.appid + ':' + this.appSecret));
     return this.get(url, this.headers);
   }
 
-  public getUserAlbums(token: string): Observable<any> {
+  public getUserPicture(token: string): Observable<any> {
+    const url = 'https://graph.facebook.com/v2.8/me/picture?redirect=false&height=310&width=300';
     const header = new HttpHeaders({'Authorization': 'Bearer ' + token});
-    const url = 'https://graph.facebook.com/v2.8/me/albums';
+    return this.get(url, header);
+  }
+  public getUserName(token: string): Observable<any> {
+    const url = 'https://graph.facebook.com/v2.8/me?fields=name';
+    const header = new HttpHeaders({'Authorization': 'Bearer ' + token});
     return this.get(url, header);
   }
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiServiceService } from '../services/api-service.service';
+import { FacebookService } from '../services/facebook.service/facebook.service';
 
 @Component({
   selector: 'app-posts',
@@ -9,21 +10,22 @@ import { ApiServiceService } from '../services/api-service.service';
 })
 export class PostsComponent implements OnInit {
   authCode: string;
-  constructor(private route: ActivatedRoute, private apiService: ApiServiceService, private router: Router) { }
+  userName: string;
+  ProfilePictureUrl: string;
+  constructor(private route: ActivatedRoute, private apiService: ApiServiceService,
+    private fbservice: FacebookService) { }
 
   ngOnInit() {
     this.authCode = '';
     this.route.queryParams.subscribe(params => {
       this.authCode = params['code'];
-      // console.log(this.authCode);
-      const data = this.apiService.getAccessToken(this.authCode);
-      data.subscribe((accessData) => {
-        console.log('access : ' + accessData.access_token);
-        this.apiService.getData(accessData.access_token).subscribe((albums) => {
-          // this.router.navigate(['/home/code']);
-          console.log(JSON.stringify(albums));
+      this.apiService.getAccessToken(this.authCode).subscribe((accessData) => {
+        this.fbservice.getUserPicture(accessData.access_token).subscribe((picture) => {
+          this.fbservice.getUserName(accessData.access_token).subscribe((Name) => {
+            this.userName = Name.name;
+            this.ProfilePictureUrl = picture.data.url;
+          });
         });
-        // console.log('done' + data);
       });
     });
   }
