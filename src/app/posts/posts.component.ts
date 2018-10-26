@@ -17,11 +17,12 @@ export class PostsComponent implements OnInit {
       this.authCode = params['code'];
       // console.log(this.authCode);
       const data = this.apiService.getAccessToken(this.authCode);
-      data.subscribe((data1) => {
-        // this.apiService.getUserAlbums(data.toString()).subscribe((albums) => {
+      data.subscribe((accessData) => {
+        console.log('access : ' + accessData.access_token);
+        this.apiService.getData(accessData.access_token).subscribe((albums) => {
           // this.router.navigate(['/home/code']);
-          console.log(data1.toString());
-        // });
+          console.log(JSON.stringify(albums));
+        });
         // console.log('done' + data);
       });
     });
