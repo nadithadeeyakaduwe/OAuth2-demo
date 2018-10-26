@@ -8,6 +8,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { PostsComponent } from './posts/posts.component';
+import { FacebookService } from './services/facebook.service/facebook.service';
+import { RestService } from './services/rest.service/rest.service';
 
 const ROUTES: Route[] = [
   { path: '', component: LoginComponent },
@@ -29,7 +31,10 @@ const ROUTES: Route[] = [
     HttpModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    FacebookService,
+    RestService
+  ],
   bootstrap: [AppComponent]
 })
 

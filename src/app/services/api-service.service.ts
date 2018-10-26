@@ -41,8 +41,8 @@ export class ApiServiceService {
   }
 
   getData(token: string): Observable<any> {
-    const url =  `https://graph.facebook.com/v2.8/me?fields=id`;
-    this.headers.append('Authorization', 'Bearer ' + token);
+    const url =  `https://graph.facebook.com/v2.8/me?fields=name`;
+    this.headers.set('Authorization', 'Bearer ' + token);
     return this.http.get(url);
   }
 
